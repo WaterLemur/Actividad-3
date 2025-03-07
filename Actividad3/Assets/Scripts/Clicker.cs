@@ -22,33 +22,9 @@ public class Clicker : MonoBehaviour
     [SerializeField] AuthManager authManager;
 
     string Token;
-    string Username;
     string url = "https://sid-restapi.onrender.com";
 
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void Clicked()
-    {
-        score = score + level;
-        textScore.text = "SCORE: " + score.ToString();
-
-        AuthResponse credentials = new AuthResponse();
-        //credentials.usuario.username = PlayerPrefs.GetString("username");
-        //credentials.token = PlayerPrefs.GetString("token");
-        credentials.usuario.data.score = score;
-        string postData = JsonUtility.ToJson(credentials);
-        StartCoroutine("PatchData", postData);
-    }
     public void Upgrade()
     {
         if (score >= level)
@@ -64,16 +40,28 @@ public class Clicker : MonoBehaviour
         game.SetActive(false);
         authManager.GetScoreboard();
     }
+    public void Clicked()
+    {
+        score = score + level;
+        textScore.text = "SCORE: " + score.ToString();
 
+        UserModel credentials = new UserModel();
+        credentials.username = PlayerPrefs.GetString("username");
+        credentials.data.score = score;
+
+        string postData = JsonUtility.ToJson(credentials);
+        Debug.Log(postData);
+        StartCoroutine("PatchData", postData);
+    }
     IEnumerator PatchData(string postData)
     {
         Token = PlayerPrefs.GetString("token");
-        Username = PlayerPrefs.GetString("username");
 
         string path = "/api/usuarios";
         UnityWebRequest www = UnityWebRequest.Put(url + path, postData);
         www.method = "PATCH";
         www.SetRequestHeader("Content-Type", "application/json");
+        www.SetRequestHeader("x-token", Token);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.ConnectionError)

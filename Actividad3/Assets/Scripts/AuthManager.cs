@@ -16,18 +16,6 @@ public class AuthManager : MonoBehaviour
 
     [SerializeField] GameObject game;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void Login()
     {
         Credentials credentials = new Credentials();
@@ -45,10 +33,10 @@ public class AuthManager : MonoBehaviour
     {
         Credentials credentials = new Credentials();
         credentials.username = GameObject.Find("InputFieldUsername").
-            GetComponent<TMP_InputField>().text;
+                                GetComponent<TMP_InputField>().text;
 
         credentials.password = GameObject.Find("InputFieldPassword").
-        GetComponent<TMP_InputField>().text;
+                                GetComponent<TMP_InputField>().text;
 
         string postData = JsonUtility.ToJson(credentials);
 
@@ -210,7 +198,7 @@ public class UserModel
     public string _id;
     public string username;
     public bool estado;
-    public DataUser data;
+    public DataUser data = new DataUser();
 }
 [System.Serializable]
 public class UsersList
