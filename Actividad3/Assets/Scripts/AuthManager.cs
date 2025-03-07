@@ -166,7 +166,7 @@ public class AuthManager : MonoBehaviour
                                             .Take(5).ToArray();
 
                 int index = 0;
-                foreach(var user in response.usuarios)
+                foreach(var user in leaderboard)
                 {
                     Debug.Log(user.username + "|" + user.data.score);
                     score[index].text = user.username + "     " + user.data.score;
