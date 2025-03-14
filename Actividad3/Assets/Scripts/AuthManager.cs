@@ -16,6 +16,21 @@ public class AuthManager : MonoBehaviour
 
     [SerializeField] GameObject game;
 
+    private void Start()
+    {
+        Token = PlayerPrefs.GetString("token");
+        Username = PlayerPrefs.GetString("username");
+
+        if (string.IsNullOrEmpty(Token) || string.IsNullOrEmpty(Username))
+        {
+            Debug.Log("No hay token");
+        }
+        else
+        {
+            game.SetActive(true);
+            StartCoroutine("GetPerfil");
+        }
+    }
     public void Login()
     {
         Credentials credentials = new Credentials();
